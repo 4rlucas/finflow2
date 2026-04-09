@@ -173,11 +173,11 @@ tr:hover td{background:rgba(255,255,255,0.015);}
 .timeline-content{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 13px;}
 
 /* DÍVIDAS */
-.divida-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px;}
-.divida-months{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px;}
-.divida-month{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;font-family:'JetBrains Mono',monospace;cursor:pointer;border:1px solid var(--border);transition:.15s;}
-.divida-month.pago{background:var(--green-dim);color:var(--green);border-color:rgba(0,229,160,.3);}
-.divida-month.pendente:hover{border-color:var(--border2);}
+.compromisso-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:12px;}
+.compromisso-months{display:flex;gap:5px;flex-wrap:wrap;margin-top:10px;}
+.compromisso-month{width:32px;height:32px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;font-family:'JetBrains Mono',monospace;cursor:pointer;border:1px solid var(--border);transition:.15s;}
+.compromisso-month.pago{background:var(--green-dim);color:var(--green);border-color:rgba(0,229,160,.3);}
+.compromisso-month.pendente:hover{border-color:var(--border2);}
 
 /* CHIPS COLOR PICKER */
 .chip-row{display:flex;gap:7px;flex-wrap:wrap;}
@@ -290,7 +290,7 @@ tr:hover td{background:rgba(255,255,255,0.015);}
       <div class="nav-item active" data-page="dashboard" onclick="showPage('dashboard')"><span class="nav-icon">📊</span> Dashboard</div>
       <div class="nav-item" data-page="lancamentos" onclick="showPage('lancamentos')"><span class="nav-icon">💸</span> Lançamentos</div>
       <div class="nav-item" data-page="recorrentes" onclick="showPage('recorrentes')"><span class="nav-icon">🔁</span> Recorrentes</div>
-      <div class="nav-item" data-page="dividas" onclick="showPage('dividas')"><span class="nav-icon">🏦</span> Dívidas</div>
+      <div class="nav-item" data-page="compromissos" onclick="showPage('compromissos')"><span class="nav-icon">🏦</span> Compromissos</div>
       <div class="nav-item" data-page="orcamento" onclick="showPage('orcamento')"><span class="nav-icon">🎯</span> Orçamento</div>
       <div class="nav-section">Gestão</div>
       <div class="nav-item" data-page="cartoes" onclick="showPage('cartoes')"><span class="nav-icon">💳</span> Cartões</div>
@@ -381,12 +381,12 @@ tr:hover td{background:rgba(255,255,255,0.015);}
     </div>
 
     <!-- DÍVIDAS -->
-    <div id="page-dividas" class="page">
+    <div id="page-compromissos" class="page">
       <div class="page-header">
-        <div><h2>Dívidas</h2><p>Controle de parcelamentos e dívidas externas</p></div>
-        <button class="btn btn-green" onclick="openModal('modal-divida')">＋ Nova dívida</button>
+        <div><h2>Compromissos</h2><p>Controle de parcelamentos e compromissos externas</p></div>
+        <button class="btn btn-green" onclick="openModal('modal-compromisso')">＋ Novo compromisso</button>
       </div>
-      <div id="dividas-list"></div>
+      <div id="compromissos-list"></div>
     </div>
 
     <!-- ORÇAMENTO -->
@@ -498,7 +498,7 @@ tr:hover td{background:rgba(255,255,255,0.015);}
 <nav class="mobile-nav">
   <div class="mob-nav-item active" data-page="dashboard" onclick="showPage('dashboard')"><span class="mob-nav-icon">📊</span>Dashboard</div>
   <div class="mob-nav-item" data-page="lancamentos" onclick="showPage('lancamentos')"><span class="mob-nav-icon">💸</span>Lançamentos</div>
-  <div class="mob-nav-item" data-page="dividas" onclick="showPage('dividas')"><span class="mob-nav-icon">🏦</span>Dívidas</div>
+  <div class="mob-nav-item" data-page="compromissos" onclick="showPage('compromissos')"><span class="mob-nav-icon">🏦</span>Compromissos</div>
   <div class="mob-nav-item" data-page="investimentos" onclick="showPage('investimentos')"><span class="mob-nav-icon">📈</span>Invest.</div>
   <div class="mob-nav-item" data-page="relatorios" onclick="showPage('relatorios')"><span class="mob-nav-icon">📑</span>Relatórios</div>
 </nav>
@@ -567,9 +567,9 @@ tr:hover td{background:rgba(255,255,255,0.015);}
 </div>
 
 <!-- MODAL DÍVIDA -->
-<div class="modal-overlay" id="modal-divida">
+<div class="modal-overlay" id="modal-compromisso">
   <div class="modal">
-    <h3>Nova Dívida</h3>
+    <h3>Nova Compromisso</h3>
     <div class="form-group"><label>Nome (banco/credor)</label><input type="text" id="div-nome" placeholder="Ex: Nubank, Banco do Brasil..."></div>
     <div class="form-row">
       <div class="form-group"><label>Valor total (R$)</label><input type="number" id="div-total" placeholder="0,00" step="0.01"></div>
@@ -580,8 +580,8 @@ tr:hover td{background:rgba(255,255,255,0.015);}
       <div class="form-group"><label>Mês de término</label><input type="month" id="div-fim"></div>
     </div>
     <div class="modal-footer">
-      <button class="btn btn-outline" onclick="closeModal('modal-divida')">Cancelar</button>
-      <button class="btn btn-green" onclick="salvarDivida()">Salvar</button>
+      <button class="btn btn-outline" onclick="closeModal('modal-compromisso')">Cancelar</button>
+      <button class="btn btn-green" onclick="salvarCompromisso()">Salvar</button>
     </div>
   </div>
 </div>
@@ -713,7 +713,7 @@ const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // ====== STATE ======
 let user = null;
-let db = { transacoes:[], recorrentes:[], cartoes:[], categorias:[], parcelas:[], investimentos:[], metas:[], dividas:[], pagamentos:[] };
+let db = { transacoes:[], recorrentes:[], cartoes:[], categorias:[], parcelas:[], investimentos:[], metas:[], compromissos:[], pagamentos:[] };
 let charts = {};
 let selectedCor = '#5b9cf6';
 let tlFilter = 'all';
@@ -755,7 +755,7 @@ async function doSignup(){
 }
 async function doLogout(){
   await sb.auth.signOut(); user=null;
-  db={transacoes:[],recorrentes:[],cartoes:[],categorias:[],parcelas:[],investimentos:[],metas:[],dividas:[],pagamentos:[]};
+  db={transacoes:[],recorrentes:[],cartoes:[],categorias:[],parcelas:[],investimentos:[],metas:[],compromissos:[],pagamentos:[]};
   showLogin();
 }
 function setAuthMsg(msg){ document.getElementById('auth-msg').textContent=msg; }
@@ -771,12 +771,12 @@ async function loadAllData(){
     sb.from('parcelas').select('*').eq('user_id',uid),
     sb.from('investimentos').select('*').eq('user_id',uid).order('data',{ascending:false}),
     sb.from('metas').select('*').eq('user_id',uid),
-    sb.from('dividas').select('*').eq('user_id',uid).order('created_at'),
-    sb.from('pagamentos_divida').select('*').eq('user_id',uid),
+    sb.from('compromissos').select('*').eq('user_id',uid).order('created_at'),
+    sb.from('pagamentos_compromisso').select('*').eq('user_id',uid),
   ]);
   db.transacoes=t.data||[]; db.recorrentes=r.data||[]; db.cartoes=c.data||[];
   db.categorias=cat.data||[]; db.parcelas=p.data||[]; db.investimentos=inv.data||[];
-  db.metas=m.data||[]; db.dividas=div.data||[]; db.pagamentos=pag.data||[];
+  db.metas=m.data||[]; db.compromissos=div.data||[]; db.pagamentos=pag.data||[];
   if(!db.categorias.length) await seedCategorias();
   currentMes=getMesAtual();
   setupMesSelect();
@@ -840,7 +840,7 @@ function showPage(page){
   document.getElementById('page-'+page).classList.add('active');
   document.querySelectorAll(`[data-page="${page}"]`).forEach(el=>el.classList.add('active'));
   const fn={dashboard:renderDashboard,lancamentos:renderTransacoes,recorrentes:renderRecorrentes,
-    dividas:renderDividas,orcamento:renderOrcamento,cartoes:renderCartoes,parcelamentos:renderParcelas,
+    compromissos:renderCompromissos,orcamento:renderOrcamento,cartoes:renderCartoes,parcelamentos:renderParcelas,
     investimentos:renderInvestimentos,metas:renderMetas,timeline:()=>renderTimeline(tlFilter),
     relatorios:renderRelatorios,categorias:renderCategorias};
   if(fn[page]) fn[page]();
@@ -925,16 +925,16 @@ function renderDashboard(){
   const despMes=db.transacoes.filter(t=>t.tipo==='despesa'&&t.data&&t.data.startsWith(mes)).reduce((s,t)=>s+t.valor,0);
   const saldo=getSaldo();
   const invest=db.investimentos.reduce((s,i)=>s+i.valor,0);
-  // Dívidas
-  const dividasAtivas=db.dividas.filter(d=>{const fim=d.mes_fim;return!fim||fim>=mes;});
-  const totalDividas=dividasAtivas.reduce((s,d)=>s+d.valor_parcela,0);
+  // Compromissos
+  const compromissosAtivas=db.compromissos.filter(d=>{const fim=d.mes_fim;return!fim||fim>=mes;});
+  const totalCompromissos=compromissosAtivas.reduce((s,d)=>s+d.valor_parcela,0);
 
   document.getElementById('dash-metrics').innerHTML=`
     <div class="metric green"><div class="metric-accent"></div><div class="metric-label">Saldo acumulado</div><div class="metric-value">${fmtBRL(saldo)}</div></div>
     <div class="metric green"><div class="metric-accent"></div><div class="metric-label">Receitas (${formatMes(mes)})</div><div class="metric-value">${fmtBRL(recMes)}</div></div>
     <div class="metric red"><div class="metric-accent"></div><div class="metric-label">Despesas (${formatMes(mes)})</div><div class="metric-value">${fmtBRL(despMes)}</div></div>
     <div class="metric blue"><div class="metric-accent"></div><div class="metric-label">Investimentos</div><div class="metric-value">${fmtBRL(invest)}</div></div>
-    <div class="metric yellow"><div class="metric-accent"></div><div class="metric-label">Dívidas/mês</div><div class="metric-value">${fmtBRL(totalDividas)}</div></div>`;
+    <div class="metric yellow"><div class="metric-accent"></div><div class="metric-label">Compromissos/mês</div><div class="metric-value">${fmtBRL(totalCompromissos)}</div></div>`;
 
   // Dízimo
   if(recMes>0){
@@ -1023,7 +1023,7 @@ async function salvarRecorrente(){
   db.recorrentes.push(data); closeModal('modal-recorrente'); renderRecorrentes(); showToast('Recorrente salvo!');
 }
 
-async function salvarDivida(){
+async function salvarCompromisso(){
   const nome=document.getElementById('div-nome').value.trim();
   const valor_total=parseFloat(document.getElementById('div-total').value)||0;
   const valor_parcela=parseFloat(document.getElementById('div-parcela').value)||0;
@@ -1031,9 +1031,9 @@ async function salvarDivida(){
   const mes_fim=document.getElementById('div-fim').value;
   if(!nome||!mes_inicio) return showToast('Preencha nome e mês de início','error');
   const row={user_id:user.id,nome,valor_total,valor_parcela,mes_inicio,mes_fim};
-  const{data,error}=await sb.from('dividas').insert(row).select().single();
+  const{data,error}=await sb.from('compromissos').insert(row).select().single();
   if(error) return showToast('Erro: '+error.message,'error');
-  db.dividas.push(data); closeModal('modal-divida'); renderDividas(); showToast('Dívida adicionada!');
+  db.compromissos.push(data); closeModal('modal-compromisso'); renderCompromissos(); showToast('Compromisso adicionado!');
 }
 
 async function salvarCartao(){
@@ -1099,16 +1099,16 @@ async function delCartao(id){ await del('cartoes',''+id,'cartoes'); renderCartoe
 async function delCategoria(id){ await del('categorias',''+id,'categorias'); renderCategorias(); showToast('Removido'); }
 async function delInvestimento(id){ await del('investimentos',''+id,'investimentos'); renderInvestimentos(); showToast('Removido'); }
 async function delMeta(id){ await del('metas',''+id,'metas'); renderMetas(); showToast('Removido'); }
-async function delDivida(id){ await del('dividas',''+id,'dividas'); renderDividas(); showToast('Removido'); }
+async function delCompromisso(id){ await del('compromissos',''+id,'compromissos'); renderCompromissos(); showToast('Removido'); }
 async function pagarParcela(id){
   const p=db.parcelas.find(x=>x.id===id); if(!p||p.pagas>=p.qtd)return;
   p.pagas++; await sb.from('parcelas').update({pagas:p.pagas}).eq('id',id); renderParcelas(); showToast('Parcela paga!');
 }
-async function togglePagamentoDivida(dividaId,mes){
-  const jaExiste=db.pagamentos.find(p=>p.divida_id===dividaId&&p.mes===mes);
-  if(jaExiste){ await sb.from('pagamentos_divida').delete().eq('id',jaExiste.id); db.pagamentos=db.pagamentos.filter(p=>p.id!==jaExiste.id); }
-  else{ const{data}=await sb.from('pagamentos_divida').insert([{user_id:user.id,divida_id:dividaId,mes}]).select().single(); if(data)db.pagamentos.push(data); }
-  renderDividas();
+async function togglePagamentoCompromisso(compromissoId,mes){
+  const jaExiste=db.pagamentos.find(p=>p.compromisso_id===compromissoId&&p.mes===mes);
+  if(jaExiste){ await sb.from('pagamentos_compromisso').delete().eq('id',jaExiste.id); db.pagamentos=db.pagamentos.filter(p=>p.id!==jaExiste.id); }
+  else{ const{data}=await sb.from('pagamentos_compromisso').insert([{user_id:user.id,compromisso_id:compromissoId,mes}]).select().single(); if(data)db.pagamentos.push(data); }
+  renderCompromissos();
 }
 
 // ====== RENDER TRANSAÇÕES ======
@@ -1146,25 +1146,25 @@ function renderRecorrentes(){
 }
 
 // ====== RENDER DÍVIDAS ======
-function renderDividas(){
-  const el=document.getElementById('dividas-list');
-  if(!db.dividas.length){el.innerHTML='<div class="empty-state">Nenhuma dívida cadastrada</div>';return;}
-  el.innerHTML=db.dividas.map(d=>{
+function renderCompromissos(){
+  const el=document.getElementById('compromissos-list');
+  if(!db.compromissos.length){el.innerHTML='<div class="empty-state">Nenhuma compromisso cadastrada</div>';return;}
+  el.innerHTML=db.compromissos.map(d=>{
     const parcelas=getParcelas(d.mes_inicio,d.mes_fim);
-    const pagas=parcelas.filter(m=>db.pagamentos.find(p=>p.divida_id===d.id&&p.mes===m)).length;
+    const pagas=parcelas.filter(m=>db.pagamentos.find(p=>p.compromisso_id===d.id&&p.mes===m)).length;
     const restantes=parcelas.length-pagas;
-    return`<div class="divida-card">
+    return`<div class="compromisso-card">
       <div class="flex-between" style="margin-bottom:10px;">
         <div><div style="font-size:15px;font-weight:700;">${d.nome}</div><div style="font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace;">Total: ${fmtBRL(d.valor_total)} · ${d.valor_parcela?fmtBRL(d.valor_parcela)+'/mês':''}</div></div>
         <div style="display:flex;gap:8px;align-items:center;">
           <span class="badge ${restantes===0?'badge-green':'badge-amber'}">${restantes===0?'Quitada':restantes+' restantes'}</span>
-          <button class="btn btn-red btn-sm" onclick="delDivida('${d.id}')">✕</button>
+          <button class="btn btn-red btn-sm" onclick="delCompromisso('${d.id}')">✕</button>
         </div>
       </div>
-      <div class="divida-months">${parcelas.map(m=>{
-        const pago=db.pagamentos.find(p=>p.divida_id===d.id&&p.mes===m);
+      <div class="compromisso-months">${parcelas.map(m=>{
+        const pago=db.pagamentos.find(p=>p.compromisso_id===d.id&&p.mes===m);
         const[y,mm]=m.split('-');
-        return`<div class="divida-month ${pago?'pago':'pendente'}" title="${mm}/${y}" onclick="togglePagamentoDivida('${d.id}','${m}')">${mm}</div>`;
+        return`<div class="compromisso-month ${pago?'pago':'pendente'}" title="${mm}/${y}" onclick="togglePagamentoCompromisso('${d.id}','${m}')">${mm}</div>`;
       }).join('')}</div>
     </div>`;
   }).join('');
